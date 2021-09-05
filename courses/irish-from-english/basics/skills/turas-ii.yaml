@@ -1,0 +1,137 @@
+Skill:
+  Id: 0887f3b3-815a-4969-9a08-42caf57feb1f
+  Name: Aimsir Chaite II
+  Thumbnails:
+    - people1
+    - woman1
+    - man1
+
+New words:
+  - Word: fear
+    Translation: man
+    Images:
+      - man1
+      - man2
+      - man3
+
+  - Word: bean
+    Translation: woman
+    Also accepted:
+      - wife
+    Images:
+      - woman1
+      - woman2
+      - woman3
+
+Phrases:
+  - Phrase: Ar ól sí?
+    Translation: "{Did she} drink?"
+  - Phrase: Dúirt sí gur ól sí
+    Translation: "She said {that she did} drink"
+  - Phrase: Ar fhan mé? D'fhan
+    Translation: "{Did I} stay? I stayed"
+  - Phrase: Chuala mé gur fhan
+    Translation: I heard that (someone) stayed
+  - Phrase: Ar chuir mé? Silim gur chuir
+    Translation: "{Did I} put? I think that I put"
+  - Phrase: Silim nár thosaigh muid
+    Translation: "I think {that we did not} start"
+  - Phrase: Dúirt siad gur oscail muid
+    Translation: "He said {that we} opened"
+  - Phrase: Chuala sí gur fhág siad
+    Translation: She heard that they left
+  - Phrase: Ar fhág sí? Níor fhág
+    Translation: "{Did she} leave? (She) {did not} leave"
+  - Phrase: Mothaíonn siad nár stad sé
+    Translation: "They feel {that he did not} stop"
+  - Phrase: Ceapaim gur cheannaigh mé an briosca
+    Translation: I think that I bought the biscuit
+  - Phrase: Ar thóg mé? Deireann sé nár thóg (mé)
+    Translation: "{Did I} build? He says {that I did not}"
+
+Mini-dictionary:
+  Irish:
+    - go: that
+    - gur: that
+    - ól: drink
+    - fhan: stayed
+    - mé: I
+    - d'fhan: stayed
+    - chuala: heard
+    - chuir: put
+    - silim: I think
+    - ceapaim: I think
+    - thosaigh: started
+    - muid: we
+    - sinn: we
+    - siad: they
+    - oscail: opened
+    - fhág: left
+    - níor: did not
+    - mothaíonn: feel
+    - stad: stop
+    - cheannaigh: bought
+    - thóg: built
+    - deireann: says
+  English:
+    - that:
+      - go
+      - gur
+    - did she:
+      - ar ... sí
+      - an ... sí
+    - drink: ól
+    - that she did:
+      - gur ... sí
+      - go ... sí
+    - did i:
+      - ar ... mé
+      - an ... mé
+    - stay: fan
+    - i:
+      - mé
+    - stayed:
+      - fhan
+      - d'fhan
+    - heard:
+      - chuala
+    - (someone): " "
+    - put: cuir
+    - think:
+      - ceap
+      - sil
+    - did i:
+      - ar ... mé
+      - an ... mé
+    - we:
+      - muid
+      - sinn
+    - that we:
+      - gur ... muid
+      - go ... muid
+    - that we did not:
+      - nach ... muid
+      - nár ... muid
+    - start: tosaigh
+    - opened:
+      - oscail
+      - d'oscail
+    - they: siad
+    - left:
+      - d'fhág
+      - fhág
+    - leave: fág
+    - did not:
+      - níor
+      - ní
+    - feel: mothaigh
+    - that he did not:
+      - nach ... sé
+      - nár ... sé
+    - stop: stad
+    - bought: cheannaigh
+    - build: tóg
+    - says: deireann
+    - that I did not:
+      - nach ... mé
+      - nár ... mé
