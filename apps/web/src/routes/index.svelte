@@ -35,48 +35,17 @@
               </Translate>
             </h2>
             <div class="buttons">
-              <Button style="primary" href="course/spanish-from-english">
-                <Translate key="index.start_spanish_course">
-                  Start learning Spanish
+              <ButtonLink primary hidden href="course/irish-from-english">
+                <Translate key="index.start_irish_course">
+                  Start learning Irish
                 </Translate>
-              </Button>
+              </ButtonLink>
 
-              <Hidden>
-                <Button style="primary" href="course/german-from-english">
-                  <Translate key="index.start_german_course">
-                    Start learning German
-                  </Translate>
-                </Button>
-
-                <Button style="primary" href="course/french-from-english">
-                  <Translate key="index.start_french_course">
-                    Start learning French
-                  </Translate>
-                </Button>
-
-                <Button style="primary" href="course/bangla-from-english">
-                  <Translate key="index.start_french_course">
-                    Start learning Bangla
-                  </Translate>
-                </Button>
-
-                <Button style="primary" href="course/parsig-from-english">
-                  <Translate key="index.start_parsig_course">
-                    Start learning Middle Persian
-                  </Translate>
-                </Button>
-
-                <Button style="primary" href="course/basque-from-english">
-                  <Translate key="index.start_parsig_course">
-                    Start learning Basque
-                  </Translate>
-                </Button>
-              </Hidden>
-              <Button style="primary" href="about">
+              <ButtonLink primary href="about">
                 <Translate key="index.about_librelingo">
                   About LibreLingo
                 </Translate>
-              </Button>
+              </ButtonLink>
 
               <Hidden>
                 <Button style="primary" href="/devtools">
