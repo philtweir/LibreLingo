@@ -16,8 +16,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '16.x'
-    - run: npm install
-    - run: npm run export
+    - run: yarn
+    - run: yarn export
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
