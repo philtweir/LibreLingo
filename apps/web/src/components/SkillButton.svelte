@@ -44,9 +44,9 @@
           for (let i = 1; i <= 5; i++) {
               const rainbow = svg.getElementById(`rainbow-${i}`)
               const solid = svg.getElementById(`solid-${i}`)
-              rainbow.classList.add("invisible")
+              rainbow.classList.add("visible")
               solid.classList.add("invisible")
-              rainbow.classList.remove("visible")
+              rainbow.classList.remove("invisible")
               solid.classList.remove("visible")
           }
       }

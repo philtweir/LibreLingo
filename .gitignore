@@ -41,3 +41,5 @@ apps/docs/build/
 __sapper__
 /apps/web/src/courses/*-from-*
 .yarn
+/apps/web/src/courses/
+/env

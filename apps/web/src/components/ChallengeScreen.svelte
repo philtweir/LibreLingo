@@ -157,7 +157,6 @@
 {#if currentChallenge}
   <div class="container" in:scale>
     <section class="section">
-      <ProgressBar value="{progress}" />
       {#each challenges as challenge, i (challenge.id)}
         {#if challenge.id === currentChallenge.id}
           <div
@@ -221,6 +220,7 @@
           </div>
         {/if}
       {/each}
+      <ProgressBar value="{progress}" />asdf
     </section>
   </div>
 {/if}

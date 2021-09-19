@@ -7,8 +7,8 @@
   $: progress.set(value)
 </script>
 
-<div>
-  <progress class="progress" value="{$progress}" max="1">
+<div class="progress-container">
+  <progress color="green" class="progress" value="{$progress}" max="1">
     {$progress * 100}%
   </progress>
 </div>
@@ -20,6 +20,23 @@
   }
 
   .progress {
-    border: 1px solid transparentize($blue, 0.9);
+    border: none;
+    border-radius: 0 0;
+    color: linear-gradient(to right, #88ff88 0px, #8888ff 100px, #ff88ff 200px, orange 300px, red 400px, white 100%);
+  }
+  .progress::-webkit-progress-value {
+    background: linear-gradient(to right, #88ff88 0px, #8888ff 100px, #ff88ff 200px, orange 300px, red 400px, white 100%);
+  }
+  .progress::-moz-progress-bar {
+    background: linear-gradient(to right, #88ff88 0px, #8888ff 100px, #ff88ff 200px, orange 300px, red 400px, white 100%);
+  }
+
+  .progress-container {
+    position: fixed;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 0;
+    width: 100%;
   }
 </style>

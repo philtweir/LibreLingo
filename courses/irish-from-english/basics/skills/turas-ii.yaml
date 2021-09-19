@@ -7,21 +7,25 @@ Skill:
     - man1
 
 New words:
-  - Word: fear
-    Translation: man
+  - Word: d'ól
+    Translation: drank
     Images:
-      - man1
-      - man2
-      - man3
+      - drank1
 
-  - Word: bean
-    Translation: woman
-    Also accepted:
-      - wife
+  - Word: d'fhág
+    Translation: left
     Images:
-      - woman1
-      - woman2
-      - woman3
+      - left1
+
+  - Word: thóg
+    Translation: built
+    Images:
+      - built1
+
+  - Word: d'fhán
+    Translation: stayed
+    Images:
+      - stayed1
 
 Phrases:
   - Phrase: Ar ól sí?
