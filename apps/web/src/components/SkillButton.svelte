@@ -39,7 +39,6 @@
       const circum = 2 * Math.PI * 10
       if (!completed) {
           const completedLayer = svg.getElementById("complete")
-          console.log(completedLayer);
           completedLayer.classList.add("invisible")
       } else {
           for (let i = 1; i <= 5; i++) {
