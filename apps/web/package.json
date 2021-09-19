@@ -62,7 +62,8 @@
     "sass": "^1.42.1",
     "sirv": "1.0.17",
     "sortablejs": "1.14.0",
-    "svelte-i18n": "3.0.3"
+    "svelte-i18n": "3.0.3",
+    "svelte-inline-svg": "^1.0.8"
   },
   "devDependencies": {
     "@babel/core": "7.15.5",

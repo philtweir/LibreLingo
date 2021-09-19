@@ -1,8 +1,8 @@
 import { register, init } from "svelte-i18n"
 
-register("en", () => require("./translation/en.json"))
+register("ga", () => require("./translation/ga.json"))
 
 init({
-    fallbackLocale: "en",
-    initialLocale: "en",
+    fallbackLocale: "ga",
+    initialLocale: "ga",
 })

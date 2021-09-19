@@ -22,7 +22,7 @@
           id,
           skillId,
           challengesPerLevel,
-          courseURL: `/course/${courseName}`,
+          courseURL: `course/${courseName}`,
       }
   }
 </script>

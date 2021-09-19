@@ -2,15 +2,14 @@
   export let shadow = true
   export let glow = false
   let imageURL =
-    shadow === true
-        ? "images/mascot-jetpack.svg"
-        : "images/mascot-jetpack-noshadow.svg"
+        "images/bandraoi.svg"
 </script>
 
-<img data-test="mascot-jetpack" src="{imageURL}" alt="" class:glow />
+<img data-test="mascot-bandraoi" src="{imageURL}" alt="" class:glow />
 
 <style type="text/scss">
   .glow {
-    filter: drop-shadow(0 0 2em #ffffff1c);
+    filter: drop-shadow(0 0 50em #fff);
+    background-color: rgba(10, 10, 20, 0.0);
   }
 </style>

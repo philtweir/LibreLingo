@@ -6,6 +6,8 @@
   const dispatch = createEventDispatcher()
   export let href: string | null = null
   export let size: "small" | "normal" | "medium" | "large" = "normal"
+  export let image = null
+  export let customImage = image != null
   export let loading = false
   export let asHref: string | null = null
   export let type: "button" | "submit" = "button"
@@ -13,9 +15,13 @@
   export let target: string | undefined = undefined
   export let tabIndex: number | undefined = undefined
   export let disabled = false
+
+  let styleTokens = `
+    --image:${image};
+  `
 </script>
 
-<div class="lluis-button" class:small={size === "small"} class:large={size === "large"} data-style={style}>
+<div class="lluis-button" class:small={size === "small"} class:large={size === "large"} data-style={style} class:customImage style="{styleTokens}">
   <LinkOrButton href={href} on:click="{() => dispatch('click')}" type={type} target={target} tabIndex={tabIndex} disabled={disabled}>
     {#if loading}
       <span class="spinner">
@@ -63,6 +69,11 @@
       filter: brightness(.9);
       transform: scale(0.9);
     }
+
+  }
+
+  .button.customImage {
+    background-image: var(--image);
   }
 
   .spinner {

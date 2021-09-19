@@ -3,7 +3,7 @@
   export let alt: string
 </script>
 
-<a href="/" class="logo">
+<a href="./" class="logo">
   <img src={src} alt={alt}/>
 </a>
 

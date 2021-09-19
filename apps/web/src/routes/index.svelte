@@ -1,5 +1,6 @@
 <script lang="typescript">
   import Mascot from "../components/Mascot.svelte"
+  import MedalButton from "../components/MedalButton.svelte"
   import LicenseLogo from "../components/LicenseLogo.svelte"
   import Button from "lluis/Button.svelte"
   import Box from "lluis/Box.svelte"
@@ -20,45 +21,47 @@
   <div class="hero-body">
     <div class="container">
       <Columns>
-        <Column size="1/4">
+        <Column size="1/2">
           <div class="mascot">
             <Mascot shadow="{false}" glow="{true}" />
           </div>
         </Column>
+        <Column size="1/4">
+          <div class="medals">
+            <Box backgroundColor="rgba(255, 255, 255, 0.3)">
+              <MedalButton maxWidth="75%" />
+            </Box>
+          </div>
+        </Column>
         <Column>
           <Box>
-            <Title>LibreLingo</Title>
             <h2 class="subtitle">
               <Translate key="index.subtitle">
-                an experiment to create a community driven language-learning
-                platform
+                Tionscadal chun aip teanga féin-tiomáinte a dhéanamh
               </Translate>
             </h2>
             <div class="buttons">
-              <ButtonLink primary hidden href="course/irish-from-english">
-                <Translate key="index.start_irish_course">
-                  Start learning Irish
-                </Translate>
-              </ButtonLink>
-
-              <ButtonLink primary href="about">
+              <ButtonLink primary href="https://librelingo.app">
                 <Translate key="index.about_librelingo">
                   About LibreLingo
                 </Translate>
               </ButtonLink>
-
-              <Hidden>
-                <Button style="primary" href="/devtools">
-                  Development tools
-                </Button>
-              </Hidden>
-
-              <Button style="primary" href="https://librelingo.app/docs/">
-                <Translate key="index.development_docs">
-                  Development documentation
+              <ButtonLink primary href="https://peppercarrot.com">
+                <Translate key="index.about_pepper_carrot">
+                  About Pepper and Carrot
                 </Translate>
-              </Button>
+              </ButtonLink>
             </div>
+            <p class="description">
+              <Translate key="index.meta.description">
+                Tionscadal chun aip teanga féin-tiomáinte a dhéanamh
+              </Translate>
+            </p>
+            <p class="attribution">
+              <Translate key="index.meta.attribution">
+                Tionscadal chun aip teanga féin-tiomáinte a dhéanamh
+              </Translate>
+            </p>
           </Box>
         </Column>
       </Columns>
@@ -78,7 +81,8 @@
   }
 
   .hero {
-    background-color: $primary;
+    background: url('images/revoy-pepper-dragon-night.png') no-repeat center;
+    background-size: cover;
   }
 
   .license {
@@ -87,11 +91,21 @@
     bottom: 1em;
   }
 
+  .medals {
+    .box {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
   @include until($tablet) {
     .mascot {
       width: 45%;
       margin: auto;
       margin-top: -3em;
     }
+  }
+
+  p {
+    font-size: 75%;
   }
 </style>

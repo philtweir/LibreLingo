@@ -18,7 +18,8 @@
 <style type="text/scss">
   nav {
     display: flex;
-    position: relative;
+    position: fixed;
+    z-index: 10;
     left: 0;
     right: 0;
     height: var(--navbar-height);
@@ -27,6 +28,7 @@
     background: var(--navbar-background);
     color: var(--navbar-text-color);
     border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 
     >* {
       img {

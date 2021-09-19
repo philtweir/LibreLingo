@@ -55,6 +55,11 @@
     margin-top: 12em;
 }
 
+html {
+    background: #112;
+    height: 100%;
+}
+
 
 @import "~bulmaswatch/lumen/overrides.scss";
 
@@ -62,7 +67,7 @@
     --spacing-small: 8px;
     --spacing-medium: 12px;
     --spacing-large: calc(var(--spacing-small) + var(--spacing-medium));
-    --blue: #325f74;
+    --blue: #112;
     --white: #faf4f0;
 
     --animation-short: .1s;

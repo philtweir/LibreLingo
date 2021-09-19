@@ -242,5 +242,17 @@
   }
   .challenge {
     padding: 2em 0;
+    margin-top: 3rem;
+    font-size: 150%;
+    font-weight: bold;
+    font-family: "Neucha";
+    color: #8d7a32;
+    padding: 0.8rem;
+    padding-bottom: 0;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px 0px #dedab0;
+    line-height: 1;
+    height: 100%;
+    background-color: #fef3b0;
   }
 </style>

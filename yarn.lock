@@ -13831,6 +13831,11 @@ svelte-i18n@3.0.3:
     intl-messageformat "^7.5.2"
     tiny-glob "^0.2.6"
 
+svelte-inline-svg@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/svelte-inline-svg/-/svelte-inline-svg-1.0.8.tgz#8df2134acd65f2fbc9b8df90c9476ce5b1022359"
+  integrity sha512-4x6FMZzY6F2Xze6q6n0yr47PwVcPNWvKJWPwM08TxpKuuWQRyyCctHSnCDUDCO1h2DpAV3o9+nTzpHZdiZGzUw==
+
 svelte-loader@2.13.6:
   version "2.13.6"
   resolved "https://registry.npmjs.org/svelte-loader/-/svelte-loader-2.13.6.tgz"

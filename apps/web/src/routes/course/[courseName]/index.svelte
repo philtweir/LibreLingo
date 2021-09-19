@@ -11,6 +11,7 @@
 
 <script lang="typescript">
   import SkillCard from "../../../components/SkillCard/index.svelte"
+  import SkillButton from "../../../components/SkillButton.svelte"
   import NavBar from "../../../components/NavBar.svelte"
   import Column from "lluis/Column.svelte"
   import Columns from "lluis/Columns.svelte"
@@ -31,13 +32,16 @@
 {#each modules as { title, skills }}
   <section class="section">
     <div class="container">
-      <h2 class="is-size-2">{title}</h2>
+      <svg width="250px" height="100px" class="banner">
+        <image height="100px" x="0px" width="250px" href="images/banner-background.svg"/>
+        <text fill="#dedab0" x="50%" y="50%" dominant-baseline="middle" text-anchor="middle">{title}</text>
+      </svg>
       <Columns multiline>
         {#each skills as skill}
           <Column sizeDesktop="1/3" sizeTablet="1/2">
-            <SkillCard
-              {... { ...skill } }
-              practiceHref="{`/course/${courseName}/skill/${skill.practiceHref}`}" />
+            <SkillButton
+              maxWidth="75%" {... { ...skill } }
+              practiceHref="{`course/${courseName}/skill/${skill.practiceHref}`}" />
           </Column>
         {/each}
       </Columns>
@@ -77,5 +81,22 @@
   .container {
     padding-right: 20px;
     padding-left: 20px;
+    text-align: center;
+  }
+  .container div.banner {
+    padding: 1rem;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('images/banner-background.svg');
+  }
+  .container svg.banner {
+    display: inline-block;
+  }
+  .container svg.banner text {
+    font-family: "Neucha";
+    font-size: 2.5rem;
+    font-weight: bold;
   }
 </style>

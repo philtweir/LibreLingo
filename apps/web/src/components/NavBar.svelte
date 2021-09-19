@@ -17,7 +17,7 @@
 
 <NavBar data-test="navbar">
   <div slot="left">
-    <Logo src="/images/logo.svg" alt="LibreLingo" />
+    <Logo src="images/bandraoi.svg" alt="LibreLingo" />
   </div>
 
   <div slot="right">
@@ -38,8 +38,10 @@
   </div>
 </NavBar>
 
-<style>
+<style type="text/scss">
   div {
     height: 100%;
+  }
+  nav {
   }
 </style>
