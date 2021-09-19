@@ -89,4 +89,9 @@
       text-align: center;
     }
   }
+
+  .hero {
+    background: url('images/success.gif') no-repeat center;
+    background-size: cover;
+  }
 </style>

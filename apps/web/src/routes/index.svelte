@@ -80,7 +80,7 @@
     height: 3em;
   }
 
-  .hero {
+  .container {
     background: url('images/revoy-pepper-dragon-night.png') no-repeat center;
     background-size: cover;
   }

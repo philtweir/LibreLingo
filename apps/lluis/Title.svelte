@@ -27,4 +27,29 @@
 <style type="text/scss">
   @import './node_modules/bulma/sass/utilities/_all';
   @import "./node_modules/bulma/sass/elements/title.sass";
+
+  h1 {
+    padding: 2em 0;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    font-size: 150%;
+    font-weight: bold;
+    font-family: "Neucha";
+    padding: 0.8rem;
+    padding-bottom: 0;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px 0px #dedab0;
+    line-height: 1;
+    height: 100%;
+  }
+
+  h1.title {
+    color: #8d7a32;
+    background-color: #fef3b0;
+  }
+
+  h1.subtitle {
+    color: black;
+    background-color: rgba(255, 240, 200, 0.3);
+  }
 </style>
