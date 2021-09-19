@@ -11,7 +11,7 @@
     ],
     "background_color": "#112",
     "display": "standalone",
-    "scope": "/",
+    "scope": "/LibreLingo/",
     "theme_color": "#112",
     "description": "Experiment with LibreLingo and Carrot+Pepper art for learning Irish"
 }
