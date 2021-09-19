@@ -243,6 +243,7 @@
   .challenge {
     padding: 2em 0;
     margin-top: 3rem;
+    margin-bottom: 3rem;
     font-size: 150%;
     font-weight: bold;
     font-family: "Neucha";

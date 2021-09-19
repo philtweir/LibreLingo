@@ -40,6 +40,15 @@
       if (!completed) {
           const completedLayer = svg.getElementById("complete")
           completedLayer.classList.add("invisible")
+      } else {
+          for (let i = 1; i <= 5; i++) {
+              const rainbow = svg.getElementById(`rainbow-${i}`)
+              const solid = svg.getElementById(`solid-${i}`)
+              rainbow.classList.add("invisible")
+              solid.classList.add("invisible")
+              rainbow.classList.remove("visible")
+              solid.classList.remove("visible")
+          }
       }
       progressArc.setAttributeNS(null, "stroke-dasharray", `${circum * progress / levels / 2} ${circum * (1 - progress / levels) / 2}`)
       return svg
@@ -109,12 +118,12 @@
       font-weight: bold;
       font-family: "Neucha";
       color: #fef3b0;
+      background-color: #cdba72;
       padding: 0.8rem;
       padding-bottom: 0.3rem;
       border-radius: 20px;
       box-shadow: 0px 0px 15px 0px #dedab0;
       line-height: 1;
-      background-color: #cdba72;
     }
     :global(.skill-medal) {
       display: inline-block;

@@ -129,7 +129,7 @@
       <div id="answer" class="chips" bind:this={answerElement}>
         {#each answerToRender as chip, index}
           <span class="chip" data-id={chip} on:click="{handleChipClick}">
-            <span class="tag is-medium">{chip}</span>
+            <span class="tag is-large">{chip}</span>
           </span>
         {/each}
       </div>
@@ -139,7 +139,7 @@
     <div id="chips" class="chips" bind:this={chipsElement}>
       {#each chipsToRender as chip, index}
         <span class="chip" data-id={chip} on:click="{handleChipClick}">
-          <span class="tag is-medium">{chip}</span>
+          <span class="tag is-large">{chip}</span>
         </span>
       {/each}
     </div>
@@ -186,7 +186,9 @@
 
   .chip {
     user-select: none;
-    margin: 0.5em 0.3em;
+    margin: 0.1em 0.0em;
+    display: inline-block;
+    padding: 0.1em;
     cursor: pointer;
   }
 
@@ -203,9 +205,15 @@
   }
 
   :global(.chips .sortable-ghost .tag) {
-    background: $blue !important;
+    background: #cdba72 !important;
     color: transparent !important;
     opacity: 0.1;
+  }
+
+  :global(.chips .tag) {
+    background-color: #cdba72;
+    color: white;
+    font-weight: bold;
   }
 
   :global(.sortable-drag) {

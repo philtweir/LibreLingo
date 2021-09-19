@@ -7,21 +7,23 @@ Skill:
     - man1
 
 New words:
-  - Word: fear
-    Translation: man
+  - Word: briosca
+    Translation: biscuit
     Images:
-      - man1
-      - man2
-      - man3
+      - biscuit1
 
-  - Word: bean
-    Translation: woman
+  - Word: bris
+    Translation: break
     Also accepted:
-      - wife
+      - broken
+      - broke
     Images:
-      - woman1
-      - woman2
-      - woman3
+      - break1
+
+  - Word: dúirt
+    Translation: said
+    Images:
+      - said1
 
 Phrases:
   - Phrase: Bhris sé an briosca

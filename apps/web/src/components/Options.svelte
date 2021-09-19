@@ -24,6 +24,7 @@
         value="{i}"
         name="{i.toString()}"
         id="{i.toString()}"
+        class="challenge-input-radio"
         disabled="{disabled}"
       />
       <Option
@@ -54,5 +55,8 @@
   label {
     display: flex;
     align-items: center;
+  }
+  input.challenge-input-radio {
+    display: none;
   }
 </style>
