@@ -96,11 +96,26 @@
     src="{imageURL}"
   />
   {:else}
-  <img
-    style="{styleTokens}"
-    class="skill-medal"
-    src="{imageURLProgress(progress, levels, completed)}"
-  >
+  <svg viewBox="0 0 114.84995 99.819198">
+    <image
+      style="{styleTokens}"
+      class="skill-medal"
+      height="100%"
+      width="100%"
+      href="{imageURLProgress(progress, levels, completed)}"
+    />
+    <g>
+    <circle
+      stroke-width="10"
+      stroke-dasharray="{2 * Math.PI * 10 * progress / levels / 2}, {2 * Math.PI * 10 * (1 - progress / levels) / 2}"
+      id="progress-arc"
+      cx="58.228191"
+      cy="84.267816"
+      r="5"
+      style="fill:none;stroke:#e5c85a;"
+    />
+    </g>
+  </svg>
   {/if}
   {/if}
   <h2>{title}</h2>
