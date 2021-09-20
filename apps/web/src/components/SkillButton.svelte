@@ -2,8 +2,10 @@
   import {  onMount } from "svelte"
   import InlineSVG from "svelte-inline-svg"
   export let imageURL = "images/skill-button-level-1.svg"
+  export let imageURLRoot = "images/skill-button-level"
   export let alt = "Learn Irish"
   export let maxWidth = null
+  export let interactiveSvg = false
 
   export let title: string
   export let levels: number
@@ -22,6 +24,14 @@
 
   import live from "../db/live"
   import getSkillStats from "../db/skill/getSkillStats"
+
+  const imageURLProgress = (progress, levels, completed) => {
+      if (completed) {
+          return imageURLRoot + "-complete.svg"
+      }
+      const stage = Math.round(5 * progress / levels)
+      return imageURLRoot + `-stage-${stage}.svg`
+  }
 
   const transform = (svg) => {
       const stage = Math.round(5 * progress / levels)
@@ -77,6 +87,7 @@
 <div class="medal">
 <a alt="{alt}" href="{practiceHref}">
   {#if ready}
+  {#if interactiveSvg}
   <InlineSVG
     style="{styleTokens}"
     bind:this="{svgElement}"
@@ -84,6 +95,13 @@
     class="skill-medal"
     src="{imageURL}"
   />
+  {:else}
+  <img
+    style="{styleTokens}"
+    class="skill-medal"
+    src="{imageURLProgress(progress, levels, completed)}"
+  >
+  {/if}
   {/if}
   <h2>{title}</h2>
 </a>
