@@ -27,10 +27,10 @@
 
   const imageURLProgress = (progress, levels, completed) => {
       if (completed) {
-          return imageURLRoot + "-complete.svg"
+          return imageURLRoot + "-complete.png"
       }
       const stage = Math.round(5 * progress / levels)
-      return imageURLRoot + `-stage-${stage}.svg`
+      return imageURLRoot + `-stage-${stage}.png`
   }
 
   const transform = (svg) => {
