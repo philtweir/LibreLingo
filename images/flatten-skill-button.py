@@ -20,16 +20,20 @@ for stage in range(6):
             solid.set('display', 'none')
         else:
             rainbow.set('display', 'none')
+    progress_arc = find_by_id(root, 'progress-arc')
+    progress_arc.set('style', 'display:none')
     completed_layer = find_by_id(root, 'complete')
     completed_layer.set('style', 'display: none')
-    ET.ElementTree(root).write(f'{fileroot}-{stage}.svg')
+    ET.ElementTree(root).write(f'{fileroot}-stage-{stage}.svg')
     os.system(f'convert -background none {fileroot}-stage-{stage}.svg {fileroot}-stage-{stage}.png')
 
 for i in range(1, 6):
     root = get_fresh_svg()
     rainbow = find_by_id(root, f'rainbow-{i}')
+    progress_arc = find_by_id(root, 'progress-arc')
     solid = find_by_id(root, f'solid-{i}')
     solid.set('display', 'none')
+    progress_arc.set('style', 'display:none')
     rainbow.set('display', 'none')
     ET.ElementTree(root).write(f'{fileroot}-complete.svg')
     os.system(f'convert -background none {fileroot}-complete.svg {fileroot}-complete.png')

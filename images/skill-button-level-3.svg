@@ -279,6 +279,6 @@
   </ns0:g>
   <ns0:g ns2:groupmode="layer" id="layer2" ns2:label="Layer 5" style="display:inline" transform="translate(1.3935745,0.2119275)">
     <ns0:circle style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.601509;stroke-linecap:round;stroke-linejoin:round" id="path1050" cx="56.728191" cy="83.95295" r="12.913365" />
-    <ns0:circle style="fill:#c0a871;fill-opacity:0.2;stroke:#c0a871" stroke-width="10" stroke-dasharray="31.4159, 31.4159" id="progress-arc" cx="56.728191" cy="84.167816" r="5" />
+    <ns0:circle style="display:none" stroke-width="10" stroke-dasharray="31.4159, 31.4159" id="progress-arc" cx="56.728191" cy="84.167816" r="5" display="none" />
   </ns0:g>
 </ns0:svg>
