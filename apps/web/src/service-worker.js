@@ -94,6 +94,10 @@ self.loadJson = async function(file) {
 
 
 self.addEventListener("fetch", (event) => {
+    if (event.request.method === "POST" || event.request.url.endsWith("_share-target")) {
+        event.respondWith(shareTargetHandler(event));
+    }
+
     if (event.request.method !== "GET" || event.request.headers.has("range") || event.request.url.indexOf("pyodide") != -1)
         return
 
@@ -159,3 +163,20 @@ self.addEventListener("fetch", (event) => {
         })
     )
 })
+
+// Thanks to https://github.com/GoogleChrome/samples/blob/c582722d63c630e5a6eebef9996889e33e53f0b7/web-share/src/js/service-worker.js#L26-L68
+const broadcastChannel = 'BroadcastChannel' in self ? new BroadcastChannel(channelName) : null;
+const shareTargetHandler = async ({event}) => {
+  if (broadcastChannel) {
+    broadcastChannel.postMessage('Saving media locally...');
+  }
+
+  const formData = await event.request.formData();
+  const mediaFiles = formData.getAll('media');
+
+  // Use the MIME type of the first file shared to determine where we redirect.
+  const routeToRedirectTo = "/LibreLingo/pyodide/pyodide.html"
+  
+  // After the POST succeeds, redirect to the main page.
+  return Response.redirect(redirectionUrl, 303);
+};

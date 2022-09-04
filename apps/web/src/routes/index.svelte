@@ -71,6 +71,7 @@
 
 <div class="license">
   <LicenseLogo />
+  <a href="./pyodide/pyodide.html">Edit</a>
 </div>
 
 <style type="text/scss">
