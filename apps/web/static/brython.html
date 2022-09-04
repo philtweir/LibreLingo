@@ -147,7 +147,7 @@ async def _command_compile_real(input_path, output_path, dry_run):
         export_course(output_path, course, settings)
     except RuntimeError as e:
         print(e)
-    print("Done")
+    window.alert("Done")
 
 class FileTreeNode:
     def __init__(self, name, children, destination):
