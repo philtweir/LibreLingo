@@ -1,0 +1,157 @@
+Skill:
+  Id: 39152455-4e5c-4339-aa71-875b77311570
+  Name: Aimsir Chaite III
+  Thumbnails:
+    - people1
+    - woman1
+    - man1
+
+New words: []
+
+Phrases:
+  - Phrase: An ndúirt tú é?
+    Translation: "{Did you} say it?"
+  - Phrase: Dúirt
+    Translation: Yes, (someone) said
+  - Phrase: Ní dúirt
+    Translation: "No, (someone) {did not} say"
+    Alternative Translations:
+    - "{Did not} say"
+  - Phrase: Dúirt sé go ndúirt sí
+    Translation: "He said {that she} said"
+  - Phrase: An raibh tú?
+    Translation: Were you?
+  - Phrase: Bhí mé
+    Translation: I was
+  - Phrase: Ní raibh mé
+    Translation: "I {was not}"
+  - Phrase: Measaim go raibh mé
+    Translation: I guess that I was
+  - Phrase: Ar chuala sí?
+    Translation: "{Did she} hear"
+  - Phrase: Chuala sí
+    Translation: She heard
+  - Phrase: Níor chuala sí
+    Translation: "She {did not} hear"
+  - Phrase: Mothaíonn tú gur chuala sí
+    Translation: You feel that she heard
+  - Phrase: An ndeachaigh tú?
+    Translation: "{Did you} go?"
+  - Phrase: Chuaigh mé
+    Translation: I went
+  - Phrase: Ní dheachaigh mé
+    Translation: "I {did not} go"
+  - Phrase: B'fhéidir nach ndeachaigh mé
+    Translation: "Maybe {[that] I did not} go"
+  - Phrase: "An ndearna tú {d'obair bhaile}?"
+    Translation: "{Did you} do your homework?"
+  - Phrase: "Rinne mé {gach rud}"
+    Translation: I did everything
+  - Phrase: "Ní dhearna mé {gach rud}"
+    Translation: "I {did not} do everything"
+  - Phrase: Ceapaim go ndearna mé
+    Translation: "I think {that I} did"
+  - Phrase: Ar tháinig tú abhaile?
+    Translation: "{Did you} come home?"
+  - Phrase: Tháinig
+    Translation: Yes, (someone) came
+    Alternative Translations:
+    - "Came"
+  - Phrase: Níor tháinig
+    Translation: "No, (someone) {did not} come"
+    Alternative Translations:
+    - "{Did not} come"
+  - Phrase: Creidíonn sí nár tháinig mé
+    Translation: "She believes {that I did not} come"
+
+Mini-dictionary:
+  Irish:
+    - go: that
+    - gur: that
+    - ól: drink
+    - fhan: stayed
+    - mé: I
+    - d'fhan: stayed
+    - chuala: heard
+    - chuir: put
+    - silim: I think
+    - ceapaim: I think
+    - thosaigh: started
+    - muid: we
+    - sinn: we
+    - siad: they
+    - oscail: opened
+    - fhág: left
+    - níor: did not
+    - mothaíonn: feel
+    - stad: stop
+    - ndúirt: said
+    - é: it
+    - ní: neg.
+    - raibh: was
+    - bhí: was
+    - measaim: I guess
+    - ndeachaigh: went
+    - chuaigh: went
+    - dheachaigh: went
+    - b'fhéidir: maybe
+    - nach: that (neg.)
+    - ndearna: did
+    - dhearna: did
+    - d'obair bhaile: your homework
+    - "?": " "
+    - rinne:
+      - did
+      - made
+    - gach rud: everything
+    - tháinig: came
+    - abhaile: home
+    - creidim: i believe
+    - creidíonn: believe
+  English:
+    - say: abair
+    - it: é
+    - no:
+      - ní (verb)
+      - níor (verb)
+    - yes:
+      - (verb)
+    - that she:
+      - go ... sí
+      - gur ... sí
+    - were:
+      - an raibh
+      - bhí
+    - was:
+      - bhí
+      - raibh
+    - was not:
+      - ní raibh
+    - guess: meas
+    - hear:
+      - cluinn
+      - clois
+    - go: téigh
+    - went: chuaigh
+    - maybe: b'fhéidir
+    - "[that] I did not":
+      - nár ... mé
+      - nach ... mé
+    - do: déan
+    - your:
+      - do
+      - bhur
+    - homework: obair bhaile
+    - "?":
+      - an
+      - ar
+      - nach
+      - nár
+    - did: rinne
+    - everything: gach rud
+    - that I:
+      - go ... mé
+      - gur ... mé
+    - come: tar
+    - home: abhaile
+    - believes: creidigh

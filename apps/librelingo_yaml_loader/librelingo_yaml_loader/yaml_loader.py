@@ -1,7 +1,7 @@
 import collections
 from pathlib import Path
 
-import bleach
+# import bleach
 from librelingo_types import (
     Course,
     DictionaryItem,
@@ -15,11 +15,18 @@ from librelingo_types import (
     AudioSettings,
     TextToSpeechSettings,
 )
-import markdown
+import mistletoe
 from yaml import safe_load
 from yaml.constructor import SafeConstructor
 
-import html2markdown  # type: ignore
+# import html2markdown  # type: ignore
+
+_sys_open = open
+def _open(p, *args, **kwargs):
+    if isinstance(p, Path):
+        p = str(p)
+    return _sys_open(p, *args, **kwargs)
+open = _open
 
 
 def add_bool(self, node):
@@ -209,14 +216,15 @@ def _convert_mini_dictionary(raw_mini_dictionary, course):
 
 def _sanitize_markdown(mdtext):
     "Removes unsafe text content from Markdown"
-    dirty_html = markdown.markdown(mdtext)
-    clean_html = bleach.clean(
-        dirty_html,
-        strip=True,
-        tags=[*bleach.sanitizer.ALLOWED_TAGS, "h1", "h2", "h3", "h4", "h5", "h6"],
-    )
+    dirty_html = mistletoe.markdown(mdtext)
+    return dirty_html
+    # clean_html = bleach.clean(
+    #     dirty_html,
+    #     strip=True,
+    #     tags=[*bleach.sanitizer.ALLOWED_TAGS, "h1", "h2", "h3", "h4", "h5", "h6"],
+    # )
 
-    return html2markdown.convert(clean_html)
+    # return html2markdown.convert(clean_html)
 
 
 def _load_introduction(path):

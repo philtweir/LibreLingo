@@ -1,4 +1,4 @@
-import editdistance  # type: ignore
+import pylev  # type: ignore
 
 from librelingo_utils import (
     get_dumb_opaque_id,
@@ -117,7 +117,7 @@ def get_chips_from_phrase(get_input_texts, phrase, course):
     extra_chips = sorted(
         deduplicated_chips,
         key=lambda chip: sum(
-            editdistance.eval(other_chip, chip) for other_chip in solution_chips
+            pylev.levenshtein(other_chip, chip) for other_chip in solution_chips
         ),
     )
 

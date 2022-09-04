@@ -31,15 +31,15 @@ def _get_module_summary(module):
     return {
         "title": module.title,
         "skills": [
-            {
+            dict(
+                summary=get_summary(skill.words, skill.phrases),
+                practiceHref=slugify(skill.name),
+                id=get_opaque_id(skill, "Skill"),
+                title=skill.name,
+                levels=get_levels(skill.words, skill.phrases),
                 **(get_imageset(skill.image_set)),
                 **(get_introduction(skill)),
-                "summary": get_summary(skill.words, skill.phrases),
-                "practiceHref": slugify(skill.name),
-                "id": get_opaque_id(skill, "Skill"),
-                "title": skill.name,
-                "levels": get_levels(skill.words, skill.phrases),
-            }
+            )
             for skill in module.skills
         ],
     }
