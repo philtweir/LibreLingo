@@ -55,7 +55,6 @@
               Continue to course page
             </Button>
             <div class="bottom">
-              <Title size="{5}">Excited about LibreLingo?</Title>
               <TwitterButton />
             </div>
           </div>

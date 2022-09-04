@@ -1,5 +1,28 @@
 import { timestamp, files, shell } from "@sapper/service-worker"
 
+function xml(req) {
+    return XMLHttpRequest(req);
+}
+self.XMLHttpRequest = xml;
+XMLHttpRequest = xml;
+importScripts(
+    "pyodide/xml-http-request.js",
+    "pyodide/pyodide.asm.js",
+    "pyodide/pyodide.js"
+)
+self.main = async function(){
+    if (!self.pyodide) {
+        self.pyodide = await loadPyodide();
+        await self.pyodide.FS.mkdir("/courses");
+        await self.pyodide.FS.mount(self.pyodide.FS.filesystems.IDBFS, {}, "/courses");
+        await self.pyodide.FS.syncfs(true, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    }
+}
+
 // eslint-disable-next-line no-constant-condition
 const ASSETS = `cache${timestamp}`
 const OFFLINE_URL = "offline.html"
@@ -16,6 +39,9 @@ self.addEventListener("install", (event) => {
             .open(ASSETS)
             .then((cache) => cache.addAll(to_cache))
             .then(() => {
+                self.main()
+            })
+            .then(() => {
                 self.skipWaiting()
             })
     )
@@ -30,6 +56,8 @@ self.addEventListener("activate", (event) => {
             }
 
             self.clients.claim()
+        }).then(() => {
+            self.main()
         })
     )
 })
@@ -47,21 +75,26 @@ dbPromise.onupgradeneeded = function (event) {
     }
 }
 
-function loadJson(file) {
-      const tx = self.db.transaction("courseData", "readonly");
-      const store = tx.objectStore("courseData");
-      const result = new Promise((res, rej) => {
-          const request = store.get(file);
-          console.log("REQ", file);
-          request.onsuccess = ev => { console.log("SUCC", request.result); res(JSON.stringify(request.result)) };
-      });
-      return result;
+// function loadJson(file) {
+//       const tx = self.db.transaction("courseData", "readonly");
+//       const store = tx.objectStore("courseData");
+//       const result = new Promise((res, rej) => {
+//           const request = store.get(file);
+//           console.log("REQ", file);
+//           request.onsuccess = ev => { console.log("SUCC", request.result); res(JSON.stringify(request.result)) };
+//       });
+//       return result;
+// }
+self.loadJson = async function(file) {
+    await self.main();
+    const content = await self.pyodide.FS.readFile(`/courses/export/${file}`);
+    console.log(content)
+    return content;
 }
-self.loadJson = loadJson;
 
 
 self.addEventListener("fetch", (event) => {
-    if (event.request.method !== "GET" || event.request.headers.has("range"))
+    if (event.request.method !== "GET" || event.request.headers.has("range") || event.request.url.indexOf("pyodide") != -1)
         return
 
     const url = new URL(event.request.url)

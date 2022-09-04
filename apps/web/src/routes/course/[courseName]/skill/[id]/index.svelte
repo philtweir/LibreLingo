@@ -21,6 +21,7 @@
   import NavBar from "../../../../../components/NavBar.svelte"
   import { sortChallengeGroups } from "./_logic"
   import { onMount } from 'svelte';
+  let ready = false;
 
   onMount(async () => {
       const res = await fetch(
@@ -31,6 +32,7 @@
       languageCode = pair.languageCode
       specialCharacters = pair.specialCharacters
 
+console.log(`/LibreLingo/courses/${courseName}/challenges/${id}.json`);
       const skillRes = await fetch(
           `/LibreLingo/courses/${courseName}/challenges/${id}.json`
       )
@@ -39,6 +41,11 @@
       skillId = skillData.id
       rawChallenges = Array.from(skillData.challenges)
       challengesPerLevel = skillData.challenges.length / skillData.levels
+ready = true;
+      expectedNumberOfChallenges = Math.max(
+          4,
+          Math.round(challengesPerLevel * 1.2)
+      )
 
   })
 
@@ -52,10 +59,7 @@
   export let skillId: string
   export let challengesPerLevel: number
 
-  let expectedNumberOfChallenges = Math.max(
-      4,
-      Math.round(challengesPerLevel * 1.2)
-  )
+  let expectedNumberOfChallenges: number
 </script>
 
 <svelte:head>
@@ -64,6 +68,7 @@
 
 <NavBar />
 
+{#if ready}
 <ChallengeScreen
   {expectedNumberOfChallenges}
   {skillId}
@@ -73,3 +78,4 @@
   {specialCharacters}
   {sortChallengeGroups}
   {courseURL} />
+{/if}
