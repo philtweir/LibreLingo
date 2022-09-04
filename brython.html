@@ -1,0 +1,363 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython_stdlib.js"></script>
+    <script type="text/javascript" src="browser-file-storage.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.0/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <script type="text/javascript"
+        src="brython_modules.js">
+    </script>
+</head>
+
+<body onload="brython()">
+<div id="jstree_demo_div" style="height: 300px; width: 300px">
+</div>
+
+<script type="text/python">
+import hashlib
+import os
+
+def mkdir(*args, **kwargs):
+    print("mkdir", args, kwargs)
+    return True
+
+os.mkdir = mkdir
+from hashlib import sha256
+from pathlib import Path
+from browser import window
+from io import BytesIO, StringIO
+import zipfile
+import tarfile
+from contextlib import contextmanager
+from base64 import b64encode
+
+from _io import FileIO
+import struct
+import json
+
+FILES = {}
+
+from browser.session_storage import storage
+from browser.object_storage import ObjectStorage
+from browser import aio
+
+object_storage = ObjectStorage(storage)
+
+loaded_assets = {}
+@contextmanager
+def open(fn, mode='r', encoding='utf-8'):
+    fn = str(fn)
+    if 'r' in mode:
+        # Hack to save waiting for MD
+        if fn.endswith('.md'):
+            print("Skipped", fn)
+            return None
+        if fn.startswith('preload:'):
+            print(fn)
+            data = loaded_assets[fn]
+            print(type(data))
+            val = StringIO(data)
+            val.seek(0)
+            yield val
+        else:
+            yield window["$url_open"](fn, mode)
+            loaded_assets[fn] = window["$url_open"](fn, mode).read()
+    else:
+        print("Writing", fn, mode)
+        if 'b' in mode:
+            stream = BytesIO()
+        else:
+            stream = StringIO()
+        yield stream
+        value = stream.getvalue()
+        print(value, "val")
+        if fn.endswith(".json"):
+            object_storage[fn] = value
+            window.saveJson(fn, value)
+        else:
+            window.saveFile(fn, value)
+
+        print("Written", fn, mode)
+
+window.pyopen = open
+
+from browser import document
+from pathlib import Path
+import collections
+from librelingo_json_export.export import export_course
+from librelingo_yaml_loader import load_course
+
+
+Settings = collections.namedtuple(
+    "Settings",
+    [
+        "dry_run",
+    ],
+)
+
+DEFAULT_SETTINGS = Settings(
+    dry_run=False,
+)
+
+def ensure_output_directory(output_path, settings):
+    if not settings.dry_run:
+        Path(output_path).mkdir(parents=True, exist_ok=True)
+
+
+def _command_import(input_path):
+    """
+    Load a YAML course into JSON files to be consumed by the web app.
+    """
+    settings = Settings(dry_run=False)
+
+    loaded_assets.clear()
+    course = load_course(input_path)
+    for filename, data in loaded_assets.items():
+        window.saveFile(filename, data)
+    window.saveFile(str(Path(input_path) / "index.json"), json.dumps(list(loaded_assets.keys())))
+    print(loaded_assets, 'loaded_assets')
+    print("Done")
+
+def _command_compile(input_path, output_path, dry_run):
+    aio.run(_command_compile_real(input_path, output_path, dry_run))
+
+async def _command_compile_real(input_path, output_path, dry_run):
+    """
+    Convert a YAML course into JSON files to be consumed by the web app.
+    """
+    settings = Settings(
+        dry_run=dry_run,
+    )
+
+    keys = json.loads(await window.loadFile(str(Path(input_path) / "index.json")))
+    loaded_assets.clear()
+    for filename in keys:
+        loaded_assets["preload:" + filename] = await window.loadFile(filename)
+    print(loaded_assets)
+    course = load_course("preload:" + input_path)
+    ensure_output_directory(output_path, settings)
+    try:
+        export_course(output_path, course, settings)
+    except RuntimeError as e:
+        print(e)
+    window.alert("Done")
+
+class FileTreeNode:
+    def __init__(self, name, children, destination):
+        self.name = name
+        self.children = children
+        self.destination = destination
+
+    @classmethod
+    def req(cls, fn, d):
+        return True
+
+    def to_json(self):
+        return {
+            "text": self.name,
+            "destination": self.destination,
+            "state": {
+                "opened": True
+            },
+            "icon": False,
+            "children": [
+                c.to_json() for c in self.children
+            ]
+        }
+
+class ModuleFileTreeNode(FileTreeNode):
+    def to_json(self):
+        dct = super().to_json()
+        dct["icon"] = "fa fa-object-group"
+        return dct
+
+class CourseFileTreeNode(FileTreeNode):
+    @classmethod
+    def req(cls, fn, d):
+        return fn != "index.json"
+
+    def to_json(self):
+        dct = super().to_json()
+        del dct["icon"]
+        return dct
+
+def filenames_to_tree(filenames):
+    print('fn', filenames)
+    root = {}
+    for fn in filenames:
+        path = fn.split('/')
+        node = root
+        for p in path:
+            node = node.setdefault(p, {})
+        node["_"] = fn
+    print(root)
+
+    def _fn_to_node(dct, fn, req=None):
+        if "index.json" in dct:
+            cls = CourseFileTreeNode
+        elif "module.yaml" in dct:
+            cls = ModuleFileTreeNode
+        else:
+            cls = FileTreeNode
+        if not req:
+            req = cls.req
+
+        if "_" not in dct:
+            children = [
+                _fn_to_node(dct[c], c)
+                for c in dct if req(c, dct[c])
+            ]
+            destination = None
+        else:
+            children = []
+            destination = dct["_"]
+
+        return cls(fn, children, destination)
+
+    return json.dumps(_fn_to_node(root, "Courses", lambda _, d: "index.json" in d).to_json())
+
+
+window._command_compile = _command_compile
+window._command_import = _command_import
+window.filenames_to_tree = filenames_to_tree
+window.brythonLoaded()
+</script>
+
+<button id="mybut">Import</button>
+<button id="mybut2">Compile</button>
+
+<hr/>
+
+<textarea id="yaml-editor" cols="100" rows="20" data-yaml-destination="">
+</textarea>
+
+<button id="saveYaml">Save File</button>
+
+<script type="text/javascript">
+
+var db = null;
+const dbPromise = indexedDB.open("LibreLingo", 3);
+
+dbPromise.onsuccess = function (event) {
+    db = event.target.result;
+    console.log("DB", db.objectStoreNames);
+}
+dbPromise.onupgradeneeded = function (event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains("courseData")) {
+        db.createObjectStore("courseData", { keyPath: "filename" })
+    }
+}
+
+function saveJson(name, file) {
+      const tx = db.transaction("courseData", "readwrite");
+      const store = tx.objectStore("courseData");
+      let data = JSON.parse(file);
+      data.filename = name;
+      console.log(name, "DATA", data.filename, data);
+      store.put(data);
+      console.log("Saved", name, "to database");
+}
+
+function saveFile(name, file) {
+    const f = new String(file)
+    console.log(f)
+    browserFileStorage.save(name, f.toString()).then((savedFile) => {
+        console.log('saved file! - ', savedFile)
+    }).catch(error => {
+        console.error(error)
+    })
+}
+
+async function loadFile(name) {
+    console.log(name, 'n', browserFileStorage.load)
+    const data = await browserFileStorage.load(name)
+    console.log(data)
+    return await data.blob.text()
+}
+
+$("#mybut").click(() => {
+    if (window["$url_open"] == undefined) {
+        window["$url_open"] = __BRYTHON__.builtins.open
+        __BRYTHON__.builtins.open = window.pyopen
+    }
+    _command_import("irish-from-english")
+    updateFiletree()
+})
+
+$("#mybut2").click(() => {
+    if (window["$url_open"] == undefined) {
+        window["$url_open"] = __BRYTHON__.builtins.open
+        __BRYTHON__.builtins.open = window.pyopen
+    }
+    console.log("Compiling...")
+    _command_compile("irish-from-english", "irish-from-english", false)
+})
+
+$("#saveFile").click(() => {
+  const data = $("#yaml-editor").text();
+  const dest = $("#yaml-editor").attr("data-yaml-destination");
+  if (data && dest) {
+    window.saveFile(data, dest);
+  }
+})
+
+function updateFiletree() {
+  browserFileStorage.list().then((filenames) => {
+    console.log(filenames);
+    const tree = JSON.parse(window.filenames_to_tree(filenames))
+    console.log(tree)
+    $('#jstree_demo_div').jstree(true).settings.core.data = tree
+    $('#jstree_demo_div').jstree(true).refresh()
+  })
+}
+
+function initFiletree(filenames) {
+  browserFileStorage.list().then((filenames) => {
+    console.log(filenames);
+    const tree = JSON.parse(window.filenames_to_tree(filenames))
+    console.log(tree)
+    $('#jstree_demo_div').jstree({ 'core' : {
+            'data' : tree
+        } });
+  })
+}
+
+function brythonLoaded() {
+    browserFileStorage.init('librelingo').then((status) => {
+        console.log(status)
+          initFiletree()
+    }).catch((error) => {
+        console.log(error)
+    })
+}
+
+$('#jstree_demo_div').on("changed.jstree", function (e, data) {
+    if (data.node && data.node.original.destination) {
+        const dest = data.node.original.destination;
+        window.loadFile(dest).then((data) => {
+          $("#yaml-editor").text(data);
+          $("#yaml-editor").attr("data-yaml-destination", dest);
+        });
+      console.log(data.node);
+    }
+});
+$('#saveYaml').click(function (e) {
+    const name = $('#yaml-editor').attr('data-yaml-destination');
+    const file = $('#yaml-editor').val();
+    console.log(name, file);
+    return saveFile(name, file);
+});
+</script>
+
+
+</body>
+
+</html>

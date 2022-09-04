@@ -1,0 +1,75 @@
+Skill:
+  Id: f106135d-d550-460e-9189-b82bb2f1563e
+  Name: Aimsir Chaite I
+  Thumbnails:
+    - people1
+    - woman1
+    - man1
+
+New words:
+  - Word: briosca
+    Translation: biscuit
+    Images:
+      - biscuit1
+
+  - Word: bris
+    Translation: break
+    Also accepted:
+      - broken
+      - broke
+    Images:
+      - break1
+
+  - Word: dúirt
+    Translation: said
+    Images:
+      - said1
+
+Phrases:
+  - Phrase: Bhris sé an briosca
+    Translation: He broke the biscuit
+  - Phrase: Briseadh an briosca
+    Translation: "The biscuit {was broken}"
+  - Phrase: Dúirt sé gur bhris sí an briosca
+    Translation: He said that she broke the biscuit
+  - Phrase: Ar bhris tú an briosca?
+    Translation: "{Did you} break the biscuit?"
+  - Phrase: Dúirt sé nár bhris sí an briosca
+    Translation: "He said {that she did not} break the biscuit"
+
+Mini-dictionary:
+  Irish:
+    - bhris: broke
+    - sé: he
+    - sí: she
+    - an: the
+    - ar: (past qn)
+    - tú: you
+    - briosca: biscuit
+    - briseadh:  was broken
+    - dúirt: said
+    - nár: (neg. past. qn)
+    - go: that
+    - gur: that
+
+  English:
+    - broke: bhris
+    - he: sé
+    - she: sí
+    - the: an
+    - you: tú
+    - biscuit: briosca
+    - was broken: briseadh
+    - broke: bhris
+    - said: dúirt
+    - break:
+      - briseann
+      - bhris
+    - that:
+      - go
+      - gur
+    - did you:
+      - ar ... tú (rialta+neamhr.)
+      - an ... tú (neamhr.)
+    - that she did not:
+      - nár ... sí
