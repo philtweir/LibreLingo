@@ -13,7 +13,7 @@ var pyodide;
 var source;
 async function main(){
     if (!pyodide) {
-        await pyodide = await loadPyodide();
+        pyodide = await loadPyodide();
         await pyodide.FS.mkdir("/courses");
         await pyodide.FS.mount(pyodide.FS.filesystems.IDBFS, {}, "/courses");
         await pyodide.FS.syncfs(true, (err) => {
@@ -36,6 +36,7 @@ async function main(){
 }
 
 async function run(body){
+    await main();
     pyodide.globals.set("kwargs", body);
     result = await pyodide.runPythonAsync(
         "await handle(**kwargs.to_py())"

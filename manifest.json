@@ -13,5 +13,21 @@
     "display": "standalone",
     "scope": "/LibreLingo/",
     "theme_color": "#112",
-    "description": "Experiment with LibreLingo and Carrot+Pepper art for learning Irish"
+    "description": "Experiment with LibreLingo and Carrot+Pepper art for learning Irish",
+    "share_target": {
+      "action": "/LibreLingo/_share-target",
+      "method": "POST",
+      "enctype": "multipart/form-data",
+      "params": {
+        "title": "name",
+        "text": "description",
+        "url": "link",
+        "files": [
+          {
+            "name": "courses",
+            "accept": ["application/yaml", ".yaml"]
+          }
+        ]
+      }
+    }
 }
