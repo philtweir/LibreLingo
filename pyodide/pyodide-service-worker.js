@@ -13,15 +13,15 @@ var pyodide;
 var source;
 async function main(){
     if (!pyodide) {
-        pyodide = await loadPyodide();
-        pyodide.FS.mkdir("/courses");
-        pyodide.FS.mount(pyodide.FS.filesystems.IDBFS, {}, "/courses");
-        pyodide.FS.syncfs(true, (err) => {
+        await pyodide = await loadPyodide();
+        await pyodide.FS.mkdir("/courses");
+        await pyodide.FS.mount(pyodide.FS.filesystems.IDBFS, {}, "/courses");
+        await pyodide.FS.syncfs(true, (err) => {
             if (err) {
                 console.error(err);
             }
         });
-        pyodide.globals.set("json", await pyodide.pyimport("json"));
+        await pyodide.globals.set("json", await pyodide.pyimport("json"));
         res = await fetch("pyodide.py");
         await pyodide.loadPackage("micropip");
         await pyodide.loadPackage("pyyaml");
