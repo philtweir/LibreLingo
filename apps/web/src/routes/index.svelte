@@ -41,16 +41,16 @@
               </Translate>
             </h2>
             <div class="buttons">
-              <ButtonLink primary href="https://librelingo.app">
+              <Button primary href="https://librelingo.app">
                 <Translate key="index.about_librelingo">
                   About LibreLingo
                 </Translate>
-              </ButtonLink>
-              <ButtonLink primary href="https://peppercarrot.com">
+              </Button>
+              <Button primary href="https://peppercarrot.com">
                 <Translate key="index.about_pepper_carrot">
                   About Pepper and Carrot
                 </Translate>
-              </ButtonLink>
+              </Button>
             </div>
             <p class="description">
               <Translate key="index.meta.description">

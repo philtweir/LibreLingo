@@ -1,22 +1,30 @@
 <script lang="typescript" context="module">
   export async function preload(page) {
       const { courseName } = page.params
-      const { modules, languageName } = await import(
-          `../../../courses/${courseName}/courseData.json`
-      )
-
-      return { courseName, modules, languageName }
+      return { courseName, modules: [], languageName: "unset" }
   }
 </script>
 
 <script lang="typescript">
   import SkillCard from "../../../components/SkillCard/index.svelte"
+  import { onMount } from 'svelte';
   import SkillButton from "../../../components/SkillButton.svelte"
   import NavBar from "../../../components/NavBar.svelte"
   import Column from "lluis/Column.svelte"
   import Columns from "lluis/Columns.svelte"
   import Content from "lluis/Content.svelte"
   import type { ModulesType } from "../../../types/ModulesType"
+
+  onMount(async () => {
+      const res = await fetch(
+          `/LibreLingo/courses/${courseName}/courseData.json`
+      )
+      let pair
+      pair = await res.json()
+      modules = pair.modules
+      languageName = pair.languageName
+      console.log(modules, languageName, pair)
+  })
 
   export let courseName = null
   export let modules: ModulesType = null

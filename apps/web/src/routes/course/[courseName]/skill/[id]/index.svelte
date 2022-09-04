@@ -1,27 +1,16 @@
 <script lang="typescript" context="module">
   export async function preload(page) {
       const { id, courseName } = page.params
-      const {
-          languageName,
-          languageCode,
-          specialCharacters,
-      } = await import(`../../../../../courses/${courseName}/courseData.json`)
-      const skillData = await import(
-          `../../../../../courses/${courseName}/challenges/${id}.json`
-      )
-      const rawChallenges = skillData.challenges
-      const challengesPerLevel = skillData.challenges.length / skillData.levels
-
-      const skillId = skillData.id
 
       return {
-          rawChallenges: Array.from(rawChallenges),
-          languageName,
-          languageCode,
-          specialCharacters,
+          // rawChallenges: Array.from(rawChallenges),
+          // languageName,
+          // languageCode,
+          // specialCharacters,
           id,
-          skillId,
-          challengesPerLevel,
+          courseName: courseName,
+          // skillId,
+          // challengesPerLevel,
           courseURL: `course/${courseName}`,
       }
   }
@@ -31,7 +20,29 @@
   import ChallengeScreen from "../../../../../components/ChallengeScreen.svelte"
   import NavBar from "../../../../../components/NavBar.svelte"
   import { sortChallengeGroups } from "./_logic"
+  import { onMount } from 'svelte';
 
+  onMount(async () => {
+      const res = await fetch(
+          `/LibreLingo/courses/${courseName}/courseData.json`
+      )
+      const pair = await res.json()
+      languageName = pair.languageName
+      languageCode = pair.languageCode
+      specialCharacters = pair.specialCharacters
+
+      const skillRes = await fetch(
+          `/LibreLingo/courses/${courseName}/challenges/${id}.json`
+      )
+      const skillData = await skillRes.json()
+      console.log(skillData)
+      skillId = skillData.id
+      rawChallenges = Array.from(skillData.challenges)
+      challengesPerLevel = skillData.challenges.length / skillData.levels
+
+  })
+
+  export let courseName = null
   export let rawChallenges
   export let languageName: string
   export let languageCode: string

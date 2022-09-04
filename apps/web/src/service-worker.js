@@ -34,6 +34,32 @@ self.addEventListener("activate", (event) => {
     )
 })
 
+const dbPromise = indexedDB.open("LibreLingo", 3);
+
+dbPromise.onsuccess = function (event) {
+    self.db = event.target.result;
+    console.log("DB", db.objectStoreNames);
+}
+dbPromise.onupgradeneeded = function (event) {
+    self.db = event.target.result;
+    if (!db.objectStoreNames.contains("courseData")) {
+        db.createObjectStore("courseData", { keyPath: "filename" })
+    }
+}
+
+function loadJson(file) {
+      const tx = self.db.transaction("courseData", "readonly");
+      const store = tx.objectStore("courseData");
+      const result = new Promise((res, rej) => {
+          const request = store.get(file);
+          console.log("REQ", file);
+          request.onsuccess = ev => { console.log("SUCC", request.result); res(JSON.stringify(request.result)) };
+      });
+      return result;
+}
+self.loadJson = loadJson;
+
+
 self.addEventListener("fetch", (event) => {
     if (event.request.method !== "GET" || event.request.headers.has("range"))
         return
@@ -42,6 +68,17 @@ self.addEventListener("fetch", (event) => {
 
     // don't try to handle e.g. data: URIs
     if (!url.protocol.startsWith("http")) return
+
+    console.log(event.request.url, url.pathname)
+    const match = url.pathname.match(/\/courses\/([\w-_]*\/.*\.json)/)
+    console.log(match)
+    if (url.host === self.location.host && match) {
+        event.respondWith(loadJson(match[1]).then(res => {
+            console.log("R", res)
+            return new Response(res, { status: 200 })
+        }));
+        return
+    }
 
     // ignore dev server requests
     if (

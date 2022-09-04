@@ -3,6 +3,7 @@
 </div>
 
 <style type="text/scss">
+  @import "./node_modules/bulma/sass/utilities/functions";
   @import "./node_modules/bulma/sass/utilities/initial-variables";
   @import "./node_modules/bulma/sass/utilities/derived-variables";
   @import "./node_modules/bulma/sass/utilities/mixins";

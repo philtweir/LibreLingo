@@ -43,3 +43,4 @@ __sapper__
 .yarn
 /apps/web/src/courses/
 /env
+/.NENV
