@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/master/www/src/brython_stdlib.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.0/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<style>
+#export-list {
+  font-family: monospace
+}
+</style>
+
+  </head>
+  <body>
+<div id="jstree_demo_div" style="height: 300px; width: 300px">
+</div>
+    <script type="text/javascript">
+const pyodideReady = new Event('pyodideReady');
+const registerServiceWorker = async () => {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register("pyodide-service-worker.js", {
+        scope: "/LibreLingo/pyodide/",
+      });
+      if (registration.installing) {
+        console.log("Service worker installing");
+      } else if (registration.waiting) {
+        console.log("Service worker installed");
+      } else if (registration.active) {
+        console.log("Service worker active");
+        window.dispatchEvent(pyodideReady);
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
+registerServiceWorker();
+
+      var counter = 0;
+      async function runPython(fn, kwargs) {
+          const resp = await fetch(
+            'pyodide.test', {
+              method: "POST",
+              body: JSON.stringify({command: fn, ...kwargs}),
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+          return resp.json();
+      }
+    </script>
+<button id="mybut">Import</button>
+<button id="mybut2">Export</button>
+
+<hr/>
+
+<h4>Exported</h4>
+<div id="export-list">
+</div>
+
+<h4>Editor</h4>
+<textarea id="yaml-editor" cols="100" rows="20" data-yaml-destination="">
+</textarea>
+
+<button id="saveYaml">Save File</button>
+
+<script type="text/javascript">
+
+var db = null;
+const dbPromise = indexedDB.open("LibreLingo", 3);
+
+dbPromise.onsuccess = function (event) {
+    db = event.target.result;
+    console.log("DB", db.objectStoreNames);
+}
+dbPromise.onupgradeneeded = function (event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains("courseData")) {
+        db.createObjectStore("courseData", { keyPath: "filename" })
+    }
+}
+
+function saveJson(name, file) {
+      const tx = db.transaction("courseData", "readwrite");
+      const store = tx.objectStore("courseData");
+      let data = JSON.parse(file);
+      data.filename = name;
+      console.log(name, "DATA", data.filename, data);
+      store.put(data);
+      console.log("Saved", name, "to database");
+}
+
+function saveFile(name, file) {
+    const content = new String(file)
+    return runPython(
+      "save_file",
+      {
+          filename: name,
+          content: content
+      }
+    )
+}
+
+async function loadFile(name) {
+  return runPython(
+    "get_file_content",
+    {
+        filename: name
+    }
+  )
+}
+
+var loadedAssets;
+$("#mybut").click(async () => {
+    loadedAssets = await _command_import("irish-from-english")
+    updateFiletree(loadedAssets)
+    updateExported()
+})
+
+$("#mybut2").click(async () => {
+    const result = await _command_compile("irish-from-english", "irish-from-english", false);
+    if (result === true) {
+        updateExported();
+        alert("Done");
+    } else {
+        console.error(result);
+    }
+})
+
+async function updateFiletree(highlightedFiles) {
+  const tree = await filenamesToTree(highlightedFiles)
+  $('#jstree_demo_div').jstree(true).settings.core.data = tree
+  $('#jstree_demo_div').jstree(true).refresh()
+}
+
+async function filenamesToTree(highlightedFiles) {
+  const tree = await runPython(
+    "filenames_to_tree",
+    {
+        highlighted_files: highlightedFiles || []
+    }
+  )
+  return tree
+}
+
+$('#jstree_demo_div').on("changed.jstree", function (e, data) {
+    if (data.node && data.node.original.destination) {
+        const dest = data.node.original.destination;
+        window.loadFile(dest).then((data) => {
+            console.log("TEXT", data);
+          $("#yaml-editor").val(data);
+          $("#yaml-editor").attr("data-yaml-destination", dest);
+        });
+      console.log(data.node);
+    }
+});
+$('#saveYaml').click(function (e) {
+    const name = $('#yaml-editor').attr('data-yaml-destination');
+    const file = $('#yaml-editor').val();
+    console.log(name, file);
+    saveFile(name, file);
+    updateFiletree([name])
+    updateExported()
+});
+
+window.addEventListener("pyodideReady", () => {
+  $('#jstree_demo_div').jstree({ 'core' : {
+    'data' : []
+  } });
+  updateFiletree()
+  updateExported()
+});
+
+async function _command_compile(input_path, output_path, dry_run) {
+  return runPython("_command_compile", {input_path, output_path, dry_run});
+}
+
+async function updateExported() {
+    const exportedList = await runPython("get_exported");
+    console.log(exportedList);
+    const filteredList = exportedList.map(ex => (ex[1] ? `<del>${ex[0]}</del>` : ex[0]));
+    $('#export-list').html("<ul>\n" + filteredList.map(ex => `<li>${ex}</li>`).join("\n") + "\n</ul>");
+}
+
+async function _command_import(course) {
+  return runPython("_command_import", {input_path: course});
+}
+</script>
+  </body>
+</html>
