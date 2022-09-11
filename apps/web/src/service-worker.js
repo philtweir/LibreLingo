@@ -91,9 +91,14 @@ dbPromise.onupgradeneeded = function (event) {
 // }
 self.loadJson = async function(file) {
     await self.main();
-    const content = await self.pyodide.FS.readFile(`/courses/export/${file}`);
-    console.log(content)
-    return content;
+    try {
+      const content = await self.pyodide.FS.readFile(`/courses/export/${file}`);
+      console.log(content)
+      return content;
+    } catch (error) {
+      console.error(error);
+      return {};
+    }
 }
 
 
