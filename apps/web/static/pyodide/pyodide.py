@@ -104,7 +104,7 @@ class FileTreeNode:
     def req(cls, fn, d):
         return True
 
-    def to_json(self):
+    def to_filetree_json(self):
         return {
             "text": self.name,
             "destination": self.destination,
@@ -114,13 +114,13 @@ class FileTreeNode:
             },
             "icon": False,
             "children": [
-                c.to_json() for c in self.children
+                c.to_filetree_json() for c in self.children
             ]
         }
 
 class ModuleFileTreeNode(FileTreeNode):
-    def to_json(self):
-        dct = super().to_json()
+    def to_filetree_json(self):
+        dct = super().to_filetree_json()
         dct["icon"] = "fa fa-object-group"
         return dct
 
@@ -129,8 +129,8 @@ class CourseFileTreeNode(FileTreeNode):
     def req(cls, fn, d):
         return fn not in ("index.json", "mtime")
 
-    def to_json(self):
-        dct = super().to_json()
+    def to_filetree_json(self):
+        dct = super().to_filetree_json()
         del dct["icon"]
         return dct
 
@@ -168,12 +168,37 @@ async def filenames_to_tree(highlighted_files):
 
         return cls(fn, children, destination, highlighted=destination in highlighted_files)
 
-    return _fn_to_node(root, "Courses", lambda _, d: "index.json" in d).to_json()
+    return _fn_to_node(root, "Courses", lambda _, d: "index.json" in d)
+
+async def filenames_to_list(course):
+    files = await filenames_to_tree([])
+    print([file.name for file in files.children])
+    course_root = [file for file in files.children if file.name == course][0]
+    agg = {}
+    def _reduce_children(file):
+        for child in file.children:
+            if child.destination:
+                agg[child.destination] = child.name
+            if child.children:
+                _reduce_children(child)
+    _reduce_children(course_root)
+    return agg
+
+async def filenames_to_filetree_json(highlighted_files):
+    return (await filenames_to_tree(highlighted_files)).to_filetree_json()
 
 async def get_file_content(filename):
     root = Path(COURSE_ROOT)
     with (root / filename).open("r") as course_file:
         return course_file.read()
+
+async def get_course_as_yaml_bundle(course):
+    filelist = await filenames_to_list(course)
+    yaml_bundle = {}
+    for file in filelist.keys():
+        yaml_bundle[file] = yaml.safe_load(await get_file_content(file))
+    yaml_bundle["_librelingoBundle"] = True
+    return yaml.dump(yaml_bundle)
 
 async def save_file(filename, content):
     root = Path(COURSE_ROOT)
@@ -225,5 +250,5 @@ async def handle(command=None, **kwargs):
         #        break
         return json.dumps(await fn(**kwargs))
 
-    return f"{kwargs['counter']} {sys.version}"
+    raise RuntimeError(f"Command {command} unknown!")
 

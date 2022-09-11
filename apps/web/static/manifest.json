@@ -25,7 +25,7 @@
         "files": [
           {
             "name": "courses",
-            "accept": ["application/yaml", ".yaml"]
+            "accept": ["application/yaml", ".yaml", ".txt", "text/plain"]
           }
         ]
       }

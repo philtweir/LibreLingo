@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <style>
-#export-list {
+#built-list {
   font-family: monospace
 }
 </style>
@@ -58,14 +58,34 @@ registerServiceWorker();
           );
           return resp.json();
       }
+      async function shareCourse(course) {
+          const yaml = await getCourseAsYamlBundle(course);
+          console.log(yaml);
+          const blob = new Blob([yaml], {type: 'application/yaml'});
+          const file = new File([blob], `llb-${course}.yaml.txt`, {type: 'text/plain'});
+          const files = [file];
+
+
+          if (navigator.canShare && navigator.canShare({ files })) {
+              console.log("Sharing");
+              await navigator.share({
+                  title: `llb-${course}.yaml`,
+                  text: yaml,
+                  files
+              });
+              console.log("Shared");
+          }
+      }
     </script>
 <button id="mybut">Import</button>
-<button id="mybut2">Export</button>
+<button id="mybut2">Build</button>
+<button id="mybut3">Export via Share</button>
+<button id="mybut4">Export via File</button>
 
 <hr/>
 
-<h4>Exported</h4>
-<div id="export-list">
+<h4>Built</h4>
+<div id="build-list">
 </div>
 
 <h4>Editor</h4>
@@ -110,7 +130,14 @@ function saveFile(name, file) {
       }
     )
 }
-
+async function getCourseAsYamlBundle(course) {
+  return runPython(
+    "get_course_as_yaml_bundle",
+    {
+        course
+    }
+  )
+}
 async function loadFile(name) {
   return runPython(
     "get_file_content",
@@ -124,17 +151,25 @@ var loadedAssets;
 $("#mybut").click(async () => {
     loadedAssets = await _command_import("irish-from-english")
     updateFiletree(loadedAssets)
-    updateExported()
+    updateBuilt()
 })
 
 $("#mybut2").click(async () => {
     const result = await _command_compile("irish-from-english", "irish-from-english", false);
     if (result === true) {
-        updateExported();
+        updateBuilt();
         alert("Done");
     } else {
         console.error(result);
     }
+})
+
+$("#mybut3").click(async () => {
+    return shareCourse("irish-from-english");
+})
+
+$("#mybut4").click(async () => {
+    return downloadCourse("irish-from-english");
 })
 
 async function updateFiletree(highlightedFiles) {
@@ -143,9 +178,19 @@ async function updateFiletree(highlightedFiles) {
   $('#jstree_demo_div').jstree(true).refresh()
 }
 
+async function filenamesToList(course) {
+  const tree = await runPython(
+    "filenames_to_list",
+    {
+        course
+    }
+  )
+  return tree
+}
+
 async function filenamesToTree(highlightedFiles) {
   const tree = await runPython(
-    "filenames_to_tree",
+    "filenames_to_filetree_json",
     {
         highlighted_files: highlightedFiles || []
     }
@@ -170,7 +215,7 @@ $('#saveYaml').click(function (e) {
     console.log(name, file);
     saveFile(name, file);
     updateFiletree([name])
-    updateExported()
+    updateBuilt()
 });
 
 window.addEventListener("pyodideReady", () => {
@@ -178,18 +223,18 @@ window.addEventListener("pyodideReady", () => {
     'data' : []
   } });
   updateFiletree()
-  updateExported()
+  updateBuilt()
 });
 
 async function _command_compile(input_path, output_path, dry_run) {
   return runPython("_command_compile", {input_path, output_path, dry_run});
 }
 
-async function updateExported() {
-    const exportedList = await runPython("get_exported");
-    console.log(exportedList);
-    const filteredList = exportedList.map(ex => (ex[1] ? `<del>${ex[0]}</del>` : ex[0]));
-    $('#export-list').html("<ul>\n" + filteredList.map(ex => `<li>${ex}</li>`).join("\n") + "\n</ul>");
+async function updateBuilt() {
+    const builtList = await runPython("get_exported");
+    console.log(builtList);
+    const filteredList = builtList.map(ex => (ex[1] ? `<del>${ex[0]}</del>` : ex[0]));
+    $('#built-list').html("<ul>\n" + filteredList.map(ex => `<li>${ex}</li>`).join("\n") + "\n</ul>");
 }
 
 async function _command_import(course) {
