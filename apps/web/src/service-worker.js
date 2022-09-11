@@ -173,6 +173,7 @@ const shareTargetHandler = async (event) => {
   console.log(event);
   const formData = await event.request.formData();
   const mediaFiles = formData.getAll('media');
+  console.log(mediaFiles);
 
   // Use the MIME type of the first file shared to determine where we redirect.
   const routeToRedirectTo = "/LibreLingo/pyodide/pyodide.html"
