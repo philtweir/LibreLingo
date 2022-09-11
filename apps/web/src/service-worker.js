@@ -13,13 +13,17 @@ importScripts(
 self.main = async function(){
     if (!self.pyodide) {
         self.pyodide = await loadPyodide();
-        await self.pyodide.FS.mkdir("/courses");
-        await self.pyodide.FS.mount(self.pyodide.FS.filesystems.IDBFS, {}, "/courses");
-        await self.pyodide.FS.syncfs(true, (err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+        try {
+          await self.pyodide.FS.mkdir("/courses");
+          await self.pyodide.FS.mount(self.pyodide.FS.filesystems.IDBFS, {}, "/courses");
+          await self.pyodide.FS.syncfs(true, (err) => {
+              if (err) {
+                  console.error(err);
+              }
+          });
+        } catch (error) {
+          console.error(error, "Filesystem error with Pyodide");
+        }
     }
 }
 
