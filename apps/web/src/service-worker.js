@@ -170,6 +170,7 @@ self.addEventListener("fetch", (event) => {
 
 // Thanks to https://github.com/GoogleChrome/samples/blob/c582722d63c630e5a6eebef9996889e33e53f0b7/web-share/src/js/service-worker.js#L26-L68
 const shareTargetHandler = async ({event}) => {
+  console.log(event);
   const formData = await event.request.formData();
   const mediaFiles = formData.getAll('media');
 
