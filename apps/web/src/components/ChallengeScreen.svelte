@@ -156,7 +156,7 @@
 
 {#if currentChallenge}
   <div class="container" in:scale>
-    <section class="section">
+    <section class="section" in:fade={{ delay: 500 }}>
       {#each challenges as challenge, i (challenge.id)}
         {#if challenge.id === currentChallenge.id}
           <div

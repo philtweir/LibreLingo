@@ -1,4 +1,5 @@
 <script lang="typescript">
+  import { fade } from 'svelte/transition';
   import Mascot from "../components/Mascot.svelte"
   import MedalButton from "../components/MedalButton.svelte"
   import LicenseLogo from "../components/LicenseLogo.svelte"
@@ -18,7 +19,7 @@
 </svelte:head>
 
 <section class="hero is-bold is-fullheight">
-  <div class="hero-body">
+  <div class="hero-body" in:fade={{ delay: 500 }}>
     <div class="container">
       <Columns>
         <Column size="1/2">

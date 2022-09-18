@@ -1,5 +1,6 @@
 <script lang="typescript">
   import { tweened } from "svelte/motion"
+  import { fade } from "svelte/transition"
 
   export let value
 
@@ -7,7 +8,7 @@
   $: progress.set(value)
 </script>
 
-<div class="progress-container">
+<div class="progress-container" in:fade={{ delay: 500 }}>
   <progress color="green" class="progress" value="{$progress}" max="1">
     {$progress * 100}%
   </progress>

@@ -1,5 +1,6 @@
 <script lang="typescript">
   import Button from "lluis/Button.svelte"
+  import { fade } from "svelte/transition"
 
   export let buttonText
   export let buttonAction = null

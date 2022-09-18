@@ -21,8 +21,16 @@
     <!-- This contains the contents of the <svelte:head> component, if
 	     the current page has one -->
     %sapper.head%
+    <script>
+      function unhide() {
+                document.body.style.opacity = 1.0;
+          //setTimeout(function () {
+          //      document.body.style.opacity = 1.0;
+          //}, 100);
+      }
+    </script>
   </head>
-  <body>
+  <body onload="unhide()">
     <!-- The application will be rendered inside this element,
 	     because `src/client.js` references it -->
     <div id="sapper">%sapper.html%</div>

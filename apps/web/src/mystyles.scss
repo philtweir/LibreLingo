@@ -54,10 +54,17 @@
 .footer {
     margin-top: 12em;
 }
+.footer-inset {
+}
 
 html {
     background: #112;
     height: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+body {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
 }
 
 

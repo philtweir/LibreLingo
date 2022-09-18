@@ -1,12 +1,13 @@
 <script lang="typescript" context="module">
   export async function preload(page) {
       const { courseName } = page.params
-      return { courseName, modules: [], languageName: "unset" }
+      return { courseName, modules: [], languageName: "unset", show: false }
   }
 </script>
 
 <script lang="typescript">
   import SkillCard from "../../../components/SkillCard/index.svelte"
+  import { fade } from 'svelte/transition';
   import { onMount } from 'svelte';
   import SkillButton from "../../../components/SkillButton.svelte"
   import NavBar from "../../../components/NavBar.svelte"
@@ -24,11 +25,13 @@
       modules = pair.modules
       languageName = pair.languageName
       console.log(modules, languageName, pair)
+      show = true
   })
 
   export let courseName = null
   export let modules: ModulesType = null
   export let languageName = null
+  export let show = false
 </script>
 
 <svelte:head>
@@ -37,8 +40,10 @@
 
 <NavBar hasAuth />
 
+<div class="block { show ? 'hidden' : 'show' }">
+</div>
 {#each modules as { title, skills }}
-  <section class="section">
+  <section class="section { show ? '' : 'hidden' }" in:fade>
     <div class="container">
       <svg width="250px" height="100px" class="banner">
         <image height="100px" x="0px" width="250px" href="images/banner-background.svg"/>
@@ -57,7 +62,8 @@
   </section>
 {/each}
 
-<footer class="footer">
+<footer class="footer" in:fade={{ delay: 500 }}>
+<div class="footer-inset">
   <Content>
     <Columns>
       <Column>
@@ -82,6 +88,7 @@
     </Columns>
     <p></p>
   </Content>
+</div>
 </footer>
 
 <style type="text/scss">
@@ -90,6 +97,9 @@
     padding-right: 20px;
     padding-left: 20px;
     text-align: center;
+  }
+  .hidden {
+    visibility: hidden
   }
   .container div.banner {
     padding: 1rem;
@@ -107,4 +117,5 @@
     font-size: 2.5rem;
     font-weight: bold;
   }
+.block { height: 100% }
 </style>
