@@ -72,7 +72,7 @@
 
 <div class="license">
   <LicenseLogo />
-  <a href="./pyodide/pyodide.html">Edit</a>
+  <a href="./pyodide/pyodide.html">&pi;</a>
 </div>
 
 <style type="text/scss">
